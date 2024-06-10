@@ -26,15 +26,12 @@ public class ExchangeConvertDataRequestMapperImpl implements ExchangeConvertData
             throw new RequestMappingException("Invalid input parameters. You must input from, to and amount params");
         }
 
-        String amount = req.getParameter(AMOUNT_PARAM);
-        if (!isNumeric(amount)) {
-            throw new RequestMappingException("Amount parameters must be a number");
-        }
+        BigDecimal amount = getAmount(req.getParameter(AMOUNT_PARAM));
 
         return new ExchangeConvertData(
                 req.getParameter(FROM_PARAM),
                 req.getParameter(TO_PARAM),
-                new BigDecimal(amount)
+                amount
         );
 
     }
@@ -47,12 +44,11 @@ public class ExchangeConvertDataRequestMapperImpl implements ExchangeConvertData
         );
     }
 
-    private boolean isNumeric(String amount) {
+    private BigDecimal getAmount(String rateParam) {
         try {
-            Integer.parseInt(amount);
-            return true;
+            return new BigDecimal(rateParam);
         } catch (NumberFormatException ex) {
-            return false;
+            throw new RequestMappingException("Amount must be a number");
         }
     }
 }
