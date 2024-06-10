@@ -151,7 +151,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
             ).map(entity -> {
                 entity.setRate(updateData.rate());
                 return entity;
-            }).orElseThrow(() -> new ExchangeUpdateException("Failed to update exchange because this currency pair does not exists"));
+            }).orElseThrow(() -> new ExchangeUpdateException("This currency pair does not exists"));
 
             exchangeRateDao.updateById(entityToUpdate.getId(), entityToUpdate, connection);
 
