@@ -17,6 +17,13 @@ public class CurrencyEntity {
         this.sign = sign;
     }
 
+    public CurrencyEntity(Integer id, String name, String code, String sign) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.sign = sign;
+    }
+
     public Integer getId() {
         return id;
     }
