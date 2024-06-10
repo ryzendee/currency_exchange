@@ -5,7 +5,7 @@ import org.apache.http.HttpStatus;
 public enum ServletErrorMessages {
     //Base
     INTERNAL_SERVER_ERROR("Something went wrong...", HttpStatus.SC_INTERNAL_SERVER_ERROR),
-    INVALID_PATH_VARIABLE_ERROR("Invalid path parameters", HttpStatus.SC_FORBIDDEN),
+    INVALID_PATH_VARIABLE_ERROR("Invalid path parameters", HttpStatus.SC_BAD_REQUEST),
     VALIDATION_ERROR("This object is invalid", HttpStatus.SC_BAD_REQUEST),
     MAPPING_ERROR("Failed to map object", HttpStatus.SC_BAD_REQUEST),
 
