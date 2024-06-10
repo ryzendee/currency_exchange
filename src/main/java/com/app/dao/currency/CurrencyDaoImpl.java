@@ -13,7 +13,6 @@ public class CurrencyDaoImpl implements CurrencyDao {
 
     private static final CurrencyDao INSTANCE = new CurrencyDaoImpl();
     private final CurrencyRowMapper currencyRowMapper = CurrencyRowMapperImpl.getInstance();
-    private static final String ID_FIELD = "id";
 
     //INSERT STATEMENTS
     private static final String SAVE_SQL = """
@@ -48,7 +47,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            entity.setId(rs.getInt(ID_FIELD));
+            entity.setId(rs.getInt(1));
             return entity;
         }
     }
