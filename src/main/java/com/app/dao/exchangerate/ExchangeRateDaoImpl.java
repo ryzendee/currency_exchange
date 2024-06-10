@@ -51,10 +51,10 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
             """;
 
     //UPDATE STATEMENTS
-    private static final String UPDATE_SQL = """
+    private static final String UPDATE_BY_ID_SQL = """
             UPDATE exchange_rates
                 SET
-                    exchange_rates.rate = ?
+                    (base_currency_id, target_currency_id, rate) = (?, ?, ?)
                 WHERE exchange_rates.id = ?
             """;
 
@@ -102,9 +102,12 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
 
     @Override
     public boolean updateById(Integer id, ExchangeRateEntity updatedEntity, Connection connection) throws SQLException {
-        try (PreparedStatement updateStatement = connection.prepareStatement(UPDATE_SQL)) {
-            updateStatement.setBigDecimal(1, updatedEntity.getRate());
-            updateStatement.setInt(2, updatedEntity.getId());
+        try (PreparedStatement updateStatement = connection.prepareStatement(UPDATE_BY_ID_SQL)) {
+
+            updateStatement.setInt(1, updatedEntity.getBaseCurrency().getId());
+            updateStatement.setInt(2, updatedEntity.getTargetCurrency().getId());
+            updateStatement.setBigDecimal(3, updatedEntity.getRate());
+            updateStatement.setInt(4, updatedEntity.getId());
 
             return updateStatement.executeUpdate() > 0;
         }
