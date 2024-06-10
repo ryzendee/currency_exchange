@@ -16,7 +16,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <hikari.version>5.1.0</hikari.version>
         <sqlite.version>3.45.3.0</sqlite.version>
-        <jakarta-servlet.version>4.0.1</jakarta-servlet.version>
+        <jakarta-servlet.version>5.0.0</jakarta-servlet.version>
         <apache-http-components.version>4.5.14</apache-http-components.version>
         <jackson-databind.version>2.16.0</jackson-databind.version>
         <slf4j.version>2.0.9</slf4j.version>
