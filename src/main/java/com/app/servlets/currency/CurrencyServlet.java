@@ -28,7 +28,7 @@
     public class CurrencyServlet extends HttpServlet {
 
         // Example -> /USD
-        private static final int PATH_LENGTH = 3;
+        private static final int PATH_LENGTH = 4;
         private static final Logger LOG = LoggerFactory.getLogger(CurrencyServlet.class);
         private final CurrencyService currencyService = CurrencyServiceImpl.getInstance();
         private final CurrencyDtoMapper currencyDtoMapper = Mappers.getMapper(CurrencyDtoMapper.class);
