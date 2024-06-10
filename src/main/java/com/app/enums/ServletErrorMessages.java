@@ -17,7 +17,8 @@ public enum ServletErrorMessages {
     //Exchange Rate,
     EX_RATE_REQUEST_MAPPING_ERROR("Failed to map to object", HttpStatus.SC_BAD_REQUEST),
     EX_RATE_EXISTS_ERROR("This exchange rate is already exists", HttpStatus.SC_CONFLICT),
-    EX_RATE_NOT_FOUND_ERROR("Cannot find exchange rate with this parameters", HttpStatus.SC_NOT_FOUND);
+    EX_RATE_NOT_FOUND_ERROR("Cannot find exchange rate with this parameters", HttpStatus.SC_NOT_FOUND),
+    EX_RATE_UPDATE_ERROR("Failed to update exchange rate", HttpStatus.SC_NOT_FOUND);
 
     private final String message;
     private final int responseCode;
