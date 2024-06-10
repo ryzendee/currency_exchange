@@ -3,6 +3,7 @@ package com.app.servlets.exchange;
 import com.app.dto.response.ExchangeRateDtoResponse;
 import com.app.entity.ExchangeRateEntity;
 import com.app.exception.ExchangeRateNotFoundException;
+import com.app.exception.ExchangeUpdateException;
 import com.app.exception.RequestMappingException;
 import com.app.mapper.exchange.ExchangeRateEntityToDtoMapper;
 import com.app.mapper.exchange.ExchangeRateUpdateRequestMapper;
@@ -33,7 +34,7 @@ import static com.app.utils.ServletWriter.writeErrorResponse;
 public class ExchangeRateServlet extends HttpServlet {
 
     // example -> /USDEUR
-    private static final int PATH_LENGTH = 6;
+    private static final int PATH_LENGTH = 7;
     private static final String METHOD_PATCH = "PATCH";
     private static final Logger LOG = LoggerFactory.getLogger(ExchangeRateServlet.class);
     private final ExchangeRateService exchangeRateService = ExchangeRateServiceImpl.getInstance();
@@ -54,7 +55,7 @@ public class ExchangeRateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             String pathInfo = req.getPathInfo();
-            if (isValidPathVariable(pathInfo)) {
+            if (isPathVariableInvalid(pathInfo)) {
                 writeErrorResponse(INVALID_PATH_VARIABLE_ERROR, resp);
                 return;
             }
@@ -76,7 +77,7 @@ public class ExchangeRateServlet extends HttpServlet {
     //Update rate for exRate
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            if (isValidPathVariable(req.getPathInfo())) {
+            if (isPathVariableInvalid(req.getPathInfo())) {
                 LOG.warn("Invalid path: {}", req.getPathInfo());
                 writeErrorResponse(INVALID_PATH_VARIABLE_ERROR, resp);
                 return;
@@ -91,15 +92,15 @@ public class ExchangeRateServlet extends HttpServlet {
             mapToJsonAndWriteInResponse(dtoResponse, resp);
         } catch (RequestMappingException ex) {
             writeErrorResponse(ex, resp, MAPPING_ERROR);
-        } catch (ExchangeRateNotFoundException ex) {
-            LOG.warn("Exchange rate not found exception", ex);
-            writeErrorResponse(EX_RATE_NOT_FOUND_ERROR, resp);
+        } catch (ExchangeUpdateException ex) {
+            LOG.warn("Failed to update exchange", ex);
+            writeErrorResponse(ex, resp, EX_RATE_UPDATE_ERROR);
         } catch (SQLException ex) {
             LOG.error("Problems with database", ex);
             writeErrorResponse(INTERNAL_SERVER_ERROR, resp);
         }
     }
-    private boolean isValidPathVariable(String pathInfo) {
-        return !StringUtils.isBlank(pathInfo) && pathInfo.length() == PATH_LENGTH;
+    private boolean isPathVariableInvalid(String pathInfo) {
+        return StringUtils.isBlank(pathInfo) && pathInfo.length() != PATH_LENGTH;
     }
 }
