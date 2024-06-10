@@ -1,20 +1,20 @@
 package com.app.mapper.exchange.impl;
 
 import com.app.exception.RequestMappingException;
-import com.app.mapper.exchange.ExchangeCreateRequestMapper;
+import com.app.mapper.exchange.ExchangeRateCreateRequestMapper;
 import com.app.models.exchange.ExchangeRateCreateData;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
-public class ExchangeRateCreateRequestMapper implements ExchangeCreateRequestMapper {
-    private static final ExchangeRateCreateRequestMapper INSTANCE = new ExchangeRateCreateRequestMapper();
+public class ExchangeRateRateCreateRequestMapperImpl implements ExchangeRateCreateRequestMapper {
+    private static final ExchangeRateRateCreateRequestMapperImpl INSTANCE = new ExchangeRateRateCreateRequestMapperImpl();
     private static final String BASE_CURRENCY_CODE = "baseCurrencyCode";
     private static final String TARGET_CURRENCY_CODE = "targetCurrencyCode";
     private static final String RATE = "rate";
 
-    public static ExchangeRateCreateRequestMapper getInstance() {
+    public static ExchangeRateRateCreateRequestMapperImpl getInstance() {
         return INSTANCE;
     }
 
@@ -24,15 +24,12 @@ public class ExchangeRateCreateRequestMapper implements ExchangeCreateRequestMap
             throw new RequestMappingException("Invalid input parameters. You must input base and target currencies codes and their rate");
         }
 
-        String rate = req.getParameter(RATE);
-        if (!isNumeric(rate)) {
-            throw new RequestMappingException("Rate must be a number.");
-        }
+        BigDecimal rate = getRate(req.getParameter(RATE));
 
         return new ExchangeRateCreateData(
                 req.getParameter(BASE_CURRENCY_CODE),
                 req.getParameter(TARGET_CURRENCY_CODE),
-                new BigDecimal(rate)
+                rate
         );
     }
 
@@ -44,12 +41,11 @@ public class ExchangeRateCreateRequestMapper implements ExchangeCreateRequestMap
         );
     }
 
-    private boolean isNumeric(String rate) {
+    private BigDecimal getRate(String rateParam) {
         try {
-            Integer.parseInt(rate);
-            return true;
+            return new BigDecimal(rateParam);
         } catch (NumberFormatException ex) {
-            return false;
+            throw new RequestMappingException("Rate must be a number");
         }
     }
 }
